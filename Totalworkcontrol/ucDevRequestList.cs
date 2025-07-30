@@ -331,5 +331,17 @@ namespace Totalworkcontrol
             }
 
         }
+
+        private void dgvRequestList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            int requestNo = Convert.ToInt32(dgvRequestList.Rows[e.RowIndex].Cells["RequestNo"].Value);
+            // 메인 폼의 화면 전환 함수를 호출하여 상세 화면을 띄웁니다.
+            MainForm main = this.ParentForm as MainForm;
+            if (main != null)
+            {
+                main.ShowControl(new ucDevRequestDetail(requestNo));
+            }
+        }
     }
 }

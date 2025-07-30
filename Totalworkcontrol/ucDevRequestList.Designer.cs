@@ -237,6 +237,7 @@
             this.dgvRequestList.Size = new System.Drawing.Size(780, 306);
             this.dgvRequestList.TabIndex = 1;
             this.dgvRequestList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRequestList_CellContentClick);
+            this.dgvRequestList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRequestList_CellDoubleClick);
             this.dgvRequestList.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvRequestList_CellFormatting);
             // 
             // ucDevRequestList
