@@ -47,6 +47,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomDateTimePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FlatDateTimePicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FlatDateTimePicker.Designer.cs">
+      <DependentUpon>FlatDateTimePicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,6 +103,9 @@
     <Compile Include="ucDevRequestList.Designer.cs">
       <DependentUpon>ucDevRequestList.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="FlatDateTimePicker.resx">
+      <DependentUpon>FlatDateTimePicker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

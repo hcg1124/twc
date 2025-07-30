@@ -34,9 +34,9 @@
             this.roundedPanel5 = new Totalworkcontrol.RoundedPanel();
             this.cmbStatus = new System.Windows.Forms.ComboBox();
             this.roundedPanel4 = new Totalworkcontrol.RoundedPanel();
-            this.cmbsolution = new System.Windows.Forms.ComboBox();
+            this.cmbSolution = new System.Windows.Forms.ComboBox();
             this.roundedPanel3 = new Totalworkcontrol.RoundedPanel();
-            this.cmbdamdang = new System.Windows.Forms.ComboBox();
+            this.cmbSalesperson = new System.Windows.Forms.ComboBox();
             this.roundedPanel2 = new Totalworkcontrol.RoundedPanel();
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.roundedPanel1 = new Totalworkcontrol.RoundedPanel();
@@ -120,7 +120,7 @@
             // 
             this.roundedPanel4.BackColor = System.Drawing.Color.White;
             this.roundedPanel4.BorderColor = System.Drawing.Color.LightGray;
-            this.roundedPanel4.Controls.Add(this.cmbsolution);
+            this.roundedPanel4.Controls.Add(this.cmbSolution);
             this.roundedPanel4.CornerRadius = 10;
             this.roundedPanel4.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.roundedPanel4.LabelBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
@@ -131,20 +131,20 @@
             this.roundedPanel4.Size = new System.Drawing.Size(200, 29);
             this.roundedPanel4.TabIndex = 13;
             // 
-            // cmbsolution
+            // cmbSolution
             // 
-            this.cmbsolution.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbsolution.FormattingEnabled = true;
-            this.cmbsolution.Location = new System.Drawing.Point(87, 2);
-            this.cmbsolution.Name = "cmbsolution";
-            this.cmbsolution.Size = new System.Drawing.Size(101, 25);
-            this.cmbsolution.TabIndex = 5;
+            this.cmbSolution.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbSolution.FormattingEnabled = true;
+            this.cmbSolution.Location = new System.Drawing.Point(87, 2);
+            this.cmbSolution.Name = "cmbSolution";
+            this.cmbSolution.Size = new System.Drawing.Size(101, 25);
+            this.cmbSolution.TabIndex = 5;
             // 
             // roundedPanel3
             // 
             this.roundedPanel3.BackColor = System.Drawing.Color.White;
             this.roundedPanel3.BorderColor = System.Drawing.Color.LightGray;
-            this.roundedPanel3.Controls.Add(this.cmbdamdang);
+            this.roundedPanel3.Controls.Add(this.cmbSalesperson);
             this.roundedPanel3.CornerRadius = 10;
             this.roundedPanel3.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.roundedPanel3.LabelBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
@@ -155,14 +155,14 @@
             this.roundedPanel3.Size = new System.Drawing.Size(200, 31);
             this.roundedPanel3.TabIndex = 2;
             // 
-            // cmbdamdang
+            // cmbSalesperson
             // 
-            this.cmbdamdang.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbdamdang.FormattingEnabled = true;
-            this.cmbdamdang.Location = new System.Drawing.Point(86, 4);
-            this.cmbdamdang.Name = "cmbdamdang";
-            this.cmbdamdang.Size = new System.Drawing.Size(110, 25);
-            this.cmbdamdang.TabIndex = 14;
+            this.cmbSalesperson.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbSalesperson.FormattingEnabled = true;
+            this.cmbSalesperson.Location = new System.Drawing.Point(86, 4);
+            this.cmbSalesperson.Name = "cmbSalesperson";
+            this.cmbSalesperson.Size = new System.Drawing.Size(110, 25);
+            this.cmbSalesperson.TabIndex = 14;
             // 
             // roundedPanel2
             // 
@@ -237,7 +237,6 @@
             this.dgvRequestList.Size = new System.Drawing.Size(780, 306);
             this.dgvRequestList.TabIndex = 1;
             this.dgvRequestList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRequestList_CellContentClick);
-            this.dgvRequestList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRequestList_CellDoubleClick);
             this.dgvRequestList.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvRequestList_CellFormatting);
             // 
             // ucDevRequestList
@@ -268,7 +267,7 @@
         private System.Windows.Forms.DataGridView dgvRequestList;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.TextBox txtTitle;
-        private System.Windows.Forms.ComboBox cmbsolution;
+        private System.Windows.Forms.ComboBox cmbSolution;
         private RoundedPanel roundedPanel1;
         private System.Windows.Forms.TextBox txtCustomerName;
         private RoundedPanel roundedPanel2;
@@ -276,7 +275,7 @@
         private System.Windows.Forms.ComboBox cmbStatus;
         private RoundedPanel roundedPanel4;
         private RoundedPanel roundedPanel3;
-        private System.Windows.Forms.ComboBox cmbdamdang;
+        private System.Windows.Forms.ComboBox cmbSalesperson;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnNewRequest;
     }

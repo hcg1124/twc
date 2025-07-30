@@ -57,9 +57,9 @@
             this.roundedPanel14 = new Totalworkcontrol.RoundedPanel();
             this.cmbDeveloper = new System.Windows.Forms.ComboBox();
             this.roundedPanel12 = new Totalworkcontrol.RoundedPanel();
-            this.dtpProgressEnd = new System.Windows.Forms.DateTimePicker();
+            this.dtpProgressEnd = new Totalworkcontrol.FlatDateTimePicker();
             this.roundedPanel13 = new Totalworkcontrol.RoundedPanel();
-            this.dtpProgressStart = new System.Windows.Forms.DateTimePicker();
+            this.dtpProgressStart = new Totalworkcontrol.FlatDateTimePicker();
             this.roundedPanel16 = new Totalworkcontrol.RoundedPanel();
             this.txtProgressDescription = new System.Windows.Forms.TextBox();
             this.btnDeleteProgress = new System.Windows.Forms.Button();
@@ -104,9 +104,9 @@
             this.roundedPanel5 = new Totalworkcontrol.RoundedPanel();
             this.cmbStatus = new System.Windows.Forms.ComboBox();
             this.roundedPanel4 = new Totalworkcontrol.RoundedPanel();
-            this.dtpCompletionDate = new System.Windows.Forms.DateTimePicker();
+            this.dtpCompletionDate = new Totalworkcontrol.FlatDateTimePicker();
             this.roundedPanel3 = new Totalworkcontrol.RoundedPanel();
-            this.dtpRequestDate = new System.Windows.Forms.DateTimePicker();
+            this.dtpRequestDate = new Totalworkcontrol.FlatDateTimePicker();
             this.roundedPanel2 = new Totalworkcontrol.RoundedPanel();
             this.cmbRequester = new System.Windows.Forms.ComboBox();
             this.roundedPanel1 = new Totalworkcontrol.RoundedPanel();
@@ -498,17 +498,18 @@
             this.roundedPanel12.LabelWidth = 80;
             this.roundedPanel12.Location = new System.Drawing.Point(302, 88);
             this.roundedPanel12.Name = "roundedPanel12";
-            this.roundedPanel12.Size = new System.Drawing.Size(225, 33);
+            this.roundedPanel12.Size = new System.Drawing.Size(234, 33);
             this.roundedPanel12.TabIndex = 18;
             // 
             // dtpProgressEnd
             // 
-            this.dtpProgressEnd.Font = new System.Drawing.Font("굴림", 12F);
-            this.dtpProgressEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpProgressEnd.Location = new System.Drawing.Point(100, 4);
+            this.dtpProgressEnd.Font = new System.Drawing.Font("굴림", 11F);
+            this.dtpProgressEnd.Location = new System.Drawing.Point(87, 8);
+            this.dtpProgressEnd.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dtpProgressEnd.Name = "dtpProgressEnd";
-            this.dtpProgressEnd.Size = new System.Drawing.Size(118, 26);
-            this.dtpProgressEnd.TabIndex = 5;
+            this.dtpProgressEnd.Size = new System.Drawing.Size(144, 22);
+            this.dtpProgressEnd.TabIndex = 0;
+            this.dtpProgressEnd.Value = new System.DateTime(2025, 7, 30, 0, 0, 0, 0);
             // 
             // roundedPanel13
             // 
@@ -522,17 +523,18 @@
             this.roundedPanel13.LabelWidth = 80;
             this.roundedPanel13.Location = new System.Drawing.Point(52, 88);
             this.roundedPanel13.Name = "roundedPanel13";
-            this.roundedPanel13.Size = new System.Drawing.Size(227, 33);
+            this.roundedPanel13.Size = new System.Drawing.Size(244, 33);
             this.roundedPanel13.TabIndex = 19;
             // 
             // dtpProgressStart
             // 
-            this.dtpProgressStart.Font = new System.Drawing.Font("굴림", 12F);
-            this.dtpProgressStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpProgressStart.Location = new System.Drawing.Point(100, 4);
+            this.dtpProgressStart.Font = new System.Drawing.Font("굴림", 11F);
+            this.dtpProgressStart.Location = new System.Drawing.Point(88, 7);
+            this.dtpProgressStart.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dtpProgressStart.Name = "dtpProgressStart";
-            this.dtpProgressStart.Size = new System.Drawing.Size(115, 26);
-            this.dtpProgressStart.TabIndex = 4;
+            this.dtpProgressStart.Size = new System.Drawing.Size(148, 23);
+            this.dtpProgressStart.TabIndex = 0;
+            this.dtpProgressStart.Value = new System.DateTime(2025, 7, 30, 0, 0, 0, 0);
             // 
             // roundedPanel16
             // 
@@ -1082,11 +1084,13 @@
             // 
             // dtpCompletionDate
             // 
-            this.dtpCompletionDate.Font = new System.Drawing.Font("굴림", 12F);
-            this.dtpCompletionDate.Location = new System.Drawing.Point(100, 4);
+            this.dtpCompletionDate.Font = new System.Drawing.Font("굴림", 11F);
+            this.dtpCompletionDate.Location = new System.Drawing.Point(97, 9);
+            this.dtpCompletionDate.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dtpCompletionDate.Name = "dtpCompletionDate";
-            this.dtpCompletionDate.Size = new System.Drawing.Size(220, 26);
-            this.dtpCompletionDate.TabIndex = 5;
+            this.dtpCompletionDate.Size = new System.Drawing.Size(229, 16);
+            this.dtpCompletionDate.TabIndex = 0;
+            this.dtpCompletionDate.Value = new System.DateTime(2025, 7, 30, 0, 0, 0, 0);
             // 
             // roundedPanel3
             // 
@@ -1105,11 +1109,13 @@
             // 
             // dtpRequestDate
             // 
-            this.dtpRequestDate.Font = new System.Drawing.Font("굴림", 12F);
-            this.dtpRequestDate.Location = new System.Drawing.Point(100, 4);
+            this.dtpRequestDate.Font = new System.Drawing.Font("굴림", 11F);
+            this.dtpRequestDate.Location = new System.Drawing.Point(97, 8);
+            this.dtpRequestDate.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dtpRequestDate.Name = "dtpRequestDate";
-            this.dtpRequestDate.Size = new System.Drawing.Size(220, 26);
-            this.dtpRequestDate.TabIndex = 4;
+            this.dtpRequestDate.Size = new System.Drawing.Size(229, 19);
+            this.dtpRequestDate.TabIndex = 0;
+            this.dtpRequestDate.Value = new System.DateTime(2025, 7, 30, 0, 0, 0, 0);
             // 
             // roundedPanel2
             // 
@@ -1247,8 +1253,6 @@
         private System.Windows.Forms.Button btnSearchCustomer;
         private System.Windows.Forms.ComboBox cmbRequester;
         private System.Windows.Forms.ComboBox cmbStatus;
-        private System.Windows.Forms.DateTimePicker dtpRequestDate;
-        private System.Windows.Forms.DateTimePicker dtpCompletionDate;
         private RoundedPanel roundedPanel1;
         private RoundedPanel roundedPanel2;
         private RoundedPanel roundedPanel3;
@@ -1283,9 +1287,7 @@
         private RoundedPanel roundedPanel14;
         private System.Windows.Forms.ComboBox cmbDeveloper;
         private RoundedPanel roundedPanel12;
-        private System.Windows.Forms.DateTimePicker dtpProgressEnd;
         private RoundedPanel roundedPanel13;
-        private System.Windows.Forms.DateTimePicker dtpProgressStart;
         private RoundedPanel roundedPanel16;
         private System.Windows.Forms.TextBox txtProgressDescription;
         private System.Windows.Forms.Button btnDeleteProgress;
@@ -1311,6 +1313,10 @@
         private System.Windows.Forms.Button btnSaveRequest;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private FlatDateTimePicker dtpCompletionDate;
+        private FlatDateTimePicker dtpRequestDate;
+        private FlatDateTimePicker dtpProgressEnd;
+        private FlatDateTimePicker dtpProgressStart;
 
     }
 }

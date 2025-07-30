@@ -33,7 +33,7 @@ namespace Totalworkcontrol
         private void lblMenuDev_Click(object sender, EventArgs e)
         {
             // 이 부분은 나중에 '개발 요청 현황' 부품을 만들고 채울 겁니다.
-            ShowControl(new ucDevRequestList());
+            ShowControl(new ucDevRequestList()); 
         }
         /// <summary>
         /// 오른쪽 메인 패널(pnlMain)에 원하는 부품(UserControl)을 보여주는 함수입니다.

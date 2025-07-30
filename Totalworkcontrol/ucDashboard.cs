@@ -27,6 +27,12 @@ namespace Totalworkcontrol
         {
             this.chart1.MouseMove += new MouseEventHandler(chart1_MouseMove);
             this.chart1.MouseLeave += new EventHandler(chart1_MouseLeave);
+
+            foreach(Label lbl in tableLayoutPanel2.Controls.OfType<Label>())
+            {
+                lbl.Cursor = Cursors.Hand;
+                lbl.Click += new EventHandler(StatusLabel_Click);
+            }
             LoadDashboardData();
         }
 
@@ -134,7 +140,6 @@ namespace Totalworkcontrol
                 chartToolTip.Hide(chart1);
             }
         }
-
         private void chart1_MouseLeave(object sender, EventArgs e)
         {
             if (lastHoveredPoint != null)
@@ -146,5 +151,42 @@ namespace Totalworkcontrol
 
         // 디자이너에서 실수로 생성된 이벤트 핸들러
         private void groupBox2_Enter(object sender, EventArgs e) { }
+        
+        private void chart1_MouseClick(object sender, MouseEventArgs e)
+        {
+            HitTestResult result = chart1.HitTest(e.X, e.Y);
+
+            if (result.ChartElementType == ChartElementType.DataPoint)
+            {
+                DataPoint clickedPoint = chart1.Series[0].Points[result.PointIndex];
+                string statusName = clickedPoint.LegendText;
+
+                MainForm main = this.ParentForm as MainForm;
+                if (main != null)
+                {
+                    main.ShowControl(new ucDevRequestList(statusName));
+                }
+            }
+        }
+        private void StatusLabel_Click(object sender, EventArgs e)
+        {
+            // C# 5.0 (VS2013) 호환 방식으로 수정
+            Label clickedLabel = sender as Label;
+
+            if (clickedLabel != null)
+            {
+                // 라벨의 텍스트("대기 | 0")에서 "|" 앞의 글자("대기")만 잘라냅니다.
+                string statusName = clickedLabel.Text.Split('|')[0].Trim();
+
+                // 메인 폼을 찾아서 목록 화면으로 전환을 요청합니다.
+                MainForm main = this.ParentForm as MainForm;
+                if (main != null)
+                {
+                    main.ShowControl(new ucDevRequestList(statusName));
+                }
+            }
+        }
+
+
     }
 }

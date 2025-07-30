@@ -16,12 +16,25 @@ namespace Totalworkcontrol
     {
         private const string HINT_CUSTOMER = "거래처명";
         private const string HINT_TITLE = "요청제목";
+        private string _initialStatus = null;
+
         public ucDevRequestList()
         {
             InitializeComponent();
+            // 힌트 텍스트 기능을 위한 이벤트 연결
             this.txtCustomerName.Enter += new EventHandler(RemoveHintText);
             this.txtCustomerName.Leave += new EventHandler(SetHintText);
-            // 요청제목 텍스트박스
+            this.txtTitle.Enter += new EventHandler(RemoveHintText);
+            this.txtTitle.Leave += new EventHandler(SetHintText);
+        }
+
+        public ucDevRequestList(string initialStatus)
+        {
+            InitializeComponent();
+            _initialStatus = initialStatus;
+            // 힌트 텍스트 기능을 위한 이벤트 연결
+            this.txtCustomerName.Enter += new EventHandler(RemoveHintText);
+            this.txtCustomerName.Leave += new EventHandler(SetHintText);
             this.txtTitle.Enter += new EventHandler(RemoveHintText);
             this.txtTitle.Leave += new EventHandler(SetHintText);
         }
@@ -29,96 +42,20 @@ namespace Totalworkcontrol
         private void ucDevRequestList_Load(object sender, EventArgs e)
         {
             SetupDataGridView();
-            BindComboBox(cmbdamdang, "P", "영업담당", "S%"); // 'P' 카테고리 중 코드가 'S'로 시작하는 담당자
-            BindComboBox(cmbsolution, "L", "솔루션");     // 'L' 카테고리 (솔루션)
-            BindComboBox(cmbStatus, "T", "상태");         // 'T' 카테고리 (상태)
-            // ▲▲▲ 여기까지 수정 ▲▲▲
+            BindComboBoxes(); // 콤보박스 데이터 채우기
+
+            // 외부에서 검색어를 받아왔으면 콤보박스에 설정
+            if (!string.IsNullOrEmpty(_initialStatus))
+            {
+                cmbStatus.Text = _initialStatus;
+            }
+
+            // 힌트 텍스트 초기화
             SetHintText(txtCustomerName, null);
             SetHintText(txtTitle, null);
+
+            // 데이터 목록 조회
             LoadRequestData();
-        }
-        /// <summary>
-        /// 텍스트박스에 포커스가 들어올 때 힌트를 지웁니다.
-        /// </summary>
-        private void RemoveHintText(object sender, EventArgs e)
-        {
-            TextBox tb = sender as TextBox;
-            // 현재 텍스트가 힌트일 경우에만 내용을 지우고 글자색을 검정으로 바꿉니다.
-            if (tb.ForeColor == Color.Gray)
-            {
-                tb.Text = "";
-                tb.ForeColor = Color.Black;
-            }
-        }
-
-        /// <summary>
-        /// 텍스트박스에서 포커스가 나갈 때 내용이 없으면 힌트를 보여줍니다.
-        /// </summary>
-        private void SetHintText(object sender, EventArgs e)
-        {
-            TextBox tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                // 어떤 텍스트박스인지 이름으로 구분해서 알맞은 힌트를 넣습니다.
-                if (tb.Name == "txtCustomerName")
-                {
-                    tb.Text = HINT_CUSTOMER;
-                }
-                else if (tb.Name == "txtTitle")
-                {
-                    tb.Text = HINT_TITLE;
-                }
-                tb.ForeColor = Color.Gray;
-            }
-        }
-
-        /// <summary>
-        /// 공통 코드 테이블에서 데이터를 가져와 콤보박스에 바인딩합니다.
-        /// </summary>
-        private void BindComboBox(ComboBox cmb, string category, string displayName, string codeFilter = null)
-        {
-            try
-            {
-                string connString = ConfigurationManager.ConnectionStrings["db_conn"].ConnectionString;
-                using (SqlConnection conn = new SqlConnection(connString))
-                {
-                    conn.Open();
-                    // ▼▼▼ SQL 쿼리에 필터링 기능이 추가되었습니다 ▼▼▼
-                    string sql = "SELECT Code, CodeName FROM CommonCodes WHERE Category = @Category";
-                    if (!string.IsNullOrEmpty(codeFilter))
-                    {
-                        sql += " AND Code LIKE @CodeFilter";
-                    }
-                    sql += " ORDER BY CodeID";
-                    // ▲▲▲ 여기까지 수정 ▲▲▲
-
-                    using (SqlCommand cmd = new SqlCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@Category", category);
-                        if (!string.IsNullOrEmpty(codeFilter))
-                        {
-                            cmd.Parameters.AddWithValue("@CodeFilter", codeFilter);
-                        }
-
-                        DataTable dt = new DataTable();
-                        SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                        adapter.Fill(dt);
-
-                        DataRow dr = dt.NewRow();
-                        dr["Code"] = ""; // 실제 값은 비워둡니다.
-                        dr["CodeName"] = string.Format("- {0} -", displayName);
-                        dt.Rows.InsertAt(dr, 0);
-
-                        cmb.DataSource = dt;
-                        cmb.DisplayMember = "CodeName"; // 사용자에게 보여줄 값
-                        cmb.ValueMember = "Code";       // 실제 코드에서 사용할 값
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("콤보박스 데이터를 불러오는 중 오류가 발생했습니다.\n" + ex.Message, "DB 오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -126,12 +63,47 @@ namespace Totalworkcontrol
             LoadRequestData();
         }
 
-        /// <summary>
-        /// DataGridView의 컬럼과 스타일을 설정합니다.
-        /// </summary>
+        private void btnNewRequest_Click(object sender, EventArgs e)
+        {
+            MainForm main = this.ParentForm as MainForm;
+            if (main != null)
+            {
+                main.ShowControl(new ucDevRequestDetail());
+            }
+        }
+
+        private void dgvRequestList_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgvRequestList.Columns[e.ColumnIndex].Name == "Progress" && e.RowIndex >= 0)
+            {
+                int requestNo = Convert.ToInt32(dgvRequestList.Rows[e.RowIndex].Cells["RequestNo"].Value);
+                MainForm main = this.ParentForm as MainForm;
+                if (main != null)
+                {
+                    main.ShowControl(new ucDevRequestDetail(requestNo));
+                }
+            }
+        }
+
+        private void dgvRequestList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dgvRequestList.Columns[e.ColumnIndex].Name == "StatusName" && e.Value != null)
+            {
+                string status = e.Value.ToString();
+                switch (status)
+                {
+                    case "진행": e.CellStyle.ForeColor = Color.Green; break;
+                    case "취소": e.CellStyle.ForeColor = Color.Red; break;
+                    case "완료": e.CellStyle.ForeColor = Color.Blue; break;
+                    default: e.CellStyle.ForeColor = Color.Black; break;
+                }
+            }
+        }
+
         private void SetupDataGridView()
         {
             dgvRequestList.AutoGenerateColumns = false;
+            dgvRequestList.Columns.Clear();
 
             // 스타일 설정
             dgvRequestList.BorderStyle = BorderStyle.None;
@@ -141,58 +113,95 @@ namespace Totalworkcontrol
             dgvRequestList.AllowUserToAddRows = false;
             dgvRequestList.ReadOnly = true;
             dgvRequestList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-
-            // 헤더 스타일
-            dgvRequestList.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvRequestList.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
             dgvRequestList.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(240, 240, 240);
             dgvRequestList.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
             dgvRequestList.ColumnHeadersDefaultCellStyle.Font = new Font("맑은 고딕", 10F, FontStyle.Bold);
             dgvRequestList.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvRequestList.EnableHeadersVisualStyles = false;
-
             dgvRequestList.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
-            // 행 스타일
             dgvRequestList.DefaultCellStyle.Font = new Font("맑은 고딕", 9.5F);
-            dgvRequestList.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgvRequestList.RowTemplate.Height = 30;
+            dgvRequestList.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgvRequestList.RowTemplate.Height = 28;
 
             // 컬럼 추가
-            dgvRequestList.Columns.Clear();
-            dgvRequestList.Columns.Add("RequestNo", "No");
-            dgvRequestList.Columns.Add("CustomerName", "거래처명");
-            dgvRequestList.Columns.Add("Title", "요청제목");
-            dgvRequestList.Columns.Add("Solutions", "솔루션");
-            dgvRequestList.Columns.Add("RequesterID", "영업담당");
-            dgvRequestList.Columns.Add("RequesterName", "영업담당자");
-            dgvRequestList.Columns.Add("RequestDate", "작성일");
-            dgvRequestList.Columns.Add("StatusName", "상태");
+            dgvRequestList.Columns.Add(new DataGridViewTextBoxColumn { Name = "RequestNo", HeaderText = "No", DataPropertyName = "RequestNo" });
+            dgvRequestList.Columns.Add(new DataGridViewTextBoxColumn { Name = "CustomerName", HeaderText = "거래처명", DataPropertyName = "CustomerName" });
+            dgvRequestList.Columns.Add(new DataGridViewTextBoxColumn { Name = "Title", HeaderText = "요청제목", DataPropertyName = "Title" });
+            dgvRequestList.Columns.Add(new DataGridViewTextBoxColumn { Name = "Solutions", HeaderText = "솔루션", DataPropertyName = "Solutions" });
+            dgvRequestList.Columns.Add(new DataGridViewTextBoxColumn { Name = "RequesterName", HeaderText = "영업담당", DataPropertyName = "RequesterName" });
+            dgvRequestList.Columns.Add(new DataGridViewTextBoxColumn { Name = "RequestDate", HeaderText = "작성일", DataPropertyName = "RequestDate" });
+            dgvRequestList.Columns.Add(new DataGridViewTextBoxColumn { Name = "StatusName", HeaderText = "상태", DataPropertyName = "StatusName" });
             dgvRequestList.Columns.Add(new DataGridViewButtonColumn { Name = "Progress", HeaderText = "진행", Text = "현황", UseColumnTextForButtonValue = true });
 
-            // 데이터 바인딩
-            dgvRequestList.Columns["RequestNo"].DataPropertyName = "RequestNo";
-            dgvRequestList.Columns["CustomerName"].DataPropertyName = "CustomerName";
-            dgvRequestList.Columns["Title"].DataPropertyName = "Title";
-            dgvRequestList.Columns["Solutions"].DataPropertyName = "Solutions";
-            dgvRequestList.Columns["RequesterID"].DataPropertyName = "RequesterID";
-            dgvRequestList.Columns["RequesterID"].Visible = false;
-            dgvRequestList.Columns["RequesterName"].DataPropertyName = "RequesterName";
-            dgvRequestList.Columns["RequestDate"].DataPropertyName = "RequestDate";
-            dgvRequestList.Columns["StatusName"].DataPropertyName = "StatusName";
-            dgvRequestList.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            // 컬럼별 너비 및 정렬 조절
+            dgvRequestList.Columns["RequestNo"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvRequestList.Columns["RequesterName"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvRequestList.Columns["RequestDate"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvRequestList.Columns["StatusName"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-            // 컬럼 너비 자동 조절
-            foreach (DataGridViewColumn col in dgvRequestList.Columns)
+            dgvRequestList.Columns["RequestNo"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            dgvRequestList.Columns["CustomerName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgvRequestList.Columns["Title"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgvRequestList.Columns["Solutions"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgvRequestList.Columns["RequesterName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            dgvRequestList.Columns["RequestDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            dgvRequestList.Columns["StatusName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            dgvRequestList.Columns["Progress"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+        }
+
+        private void BindComboBoxes()
+        {
+            BindComboBox(cmbSalesperson, "U", "- 영업담당 -", "sales");
+            BindComboBox(cmbSolution, "L", "- 솔루션 -");
+            BindComboBox(cmbStatus, "T", "- 상태 -");
+        }
+
+        private void BindComboBox(ComboBox cmb, string category, string displayName, string userPrefix = null)
+        {
+            try
             {
-                if (col.Name == "Title")
+                string connString = ConfigurationManager.ConnectionStrings["db_conn"].ConnectionString;
+                using (SqlConnection conn = new SqlConnection(connString))
                 {
-                    // '요청제목'만 남는 공간을 꽉 채우도록 합니다.
-                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    conn.Open();
+                    string sql = "";
+                    if (category == "U")
+                    {
+                        sql = "SELECT UserID as Code, UserName as CodeName FROM Users WHERE 1=1";
+                        if (!string.IsNullOrEmpty(userPrefix))
+                        {
+                            sql += " AND UserID LIKE @Prefix";
+                        }
+                    }
+                    else
+                    {
+                        sql = "SELECT Code, CodeName FROM CommonCodes WHERE Category = @Category ORDER BY CodeID";
+                    }
+
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        if (category != "U") cmd.Parameters.AddWithValue("@Category", category);
+                        if (!string.IsNullOrEmpty(userPrefix)) cmd.Parameters.AddWithValue("@Prefix", userPrefix + "%");
+
+                        DataTable dt = new DataTable();
+                        SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                        adapter.Fill(dt);
+
+                        DataRow dr = dt.NewRow();
+                        dr["Code"] = "";
+                        dr["CodeName"] = displayName;
+                        dt.Rows.InsertAt(dr, 0);
+
+                        cmb.DataSource = dt;
+                        cmb.DisplayMember = "CodeName";
+                        cmb.ValueMember = "Code";
+                    }
                 }
-                else
-                {
-                    // 나머지 모든 컬럼은 헤더(제목) 길이에 딱 맞춥니다.
-                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(displayName + " 목록을 불러오는 중 오류가 발생했습니다.\n" + ex.Message, "DB 오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -206,15 +215,14 @@ namespace Totalworkcontrol
                     conn.Open();
 
                     StringBuilder sqlBuilder = new StringBuilder();
-                    // ▼▼▼ SQL 쿼리의 JOIN 부분이 수정되었습니다 ▼▼▼
                     sqlBuilder.Append(@"
-                       SELECT
+                        SELECT
                             req.RequestNo,
                             req.CustomerName,
                             req.Title,
                             STUFF(
                                 (SELECT ',' + s.CodeName
-                                 FROM DevProgressSolutions sol
+                                 FROM DevRequestSolutions sol
                                  JOIN CommonCodes s ON sol.SolutionCode = s.Code AND s.Category = 'L'
                                  WHERE sol.RequestNo = req.RequestNo
                                  FOR XML PATH('')), 1, 1, ''
@@ -227,10 +235,10 @@ namespace Totalworkcontrol
                             DevRequests req
                         LEFT JOIN Users urs ON req.RequesterID = urs.UserID
                         LEFT JOIN CommonCodes stat ON req.Status = stat.Code AND stat.Category = 'T'
-                        WHERE 1=1");
-                    // ▲▲▲ 여기까지 수정 ▲▲▲
+                        WHERE 1=1 ");
 
                     SqlCommand cmd = new SqlCommand();
+
                     if (!string.IsNullOrWhiteSpace(txtCustomerName.Text) && txtCustomerName.ForeColor == Color.Black)
                     {
                         sqlBuilder.Append(" AND req.CustomerName LIKE @CustomerName");
@@ -241,19 +249,15 @@ namespace Totalworkcontrol
                         sqlBuilder.Append(" AND req.Title LIKE @Title");
                         cmd.Parameters.AddWithValue("@Title", "%" + txtTitle.Text + "%");
                     }
-                    // ▲▲▲ 여기까지 추가 ▲▲▲
-
-                    // 검색 조건 추가
-                    if (cmbdamdang.SelectedIndex > 0)
+                    if (cmbSalesperson.SelectedIndex > 0)
                     {
                         sqlBuilder.Append(" AND req.RequesterID = @RequesterID");
-                        cmd.Parameters.AddWithValue("@RequesterID", cmbdamdang.SelectedValue);
+                        cmd.Parameters.AddWithValue("@RequesterID", cmbSalesperson.SelectedValue);
                     }
-                    if (cmbsolution.SelectedIndex > 0)
+                    if (cmbSolution.SelectedIndex > 0)
                     {
-                        // 파라미터 이름을 @SolutionCode로 변경하여 충돌 가능성을 제거합니다.
-                        sqlBuilder.Append(" AND req.Solutions LIKE @SolutionCode");
-                        cmd.Parameters.AddWithValue("@SolutionCode", "%" + cmbsolution.SelectedValue + "%");
+                        sqlBuilder.Append(" AND EXISTS (SELECT 1 FROM DevRequestSolutions WHERE RequestNo = req.RequestNo AND SolutionCode = @SolutionCode)");
+                        cmd.Parameters.AddWithValue("@SolutionCode", cmbSolution.SelectedValue);
                     }
                     if (cmbStatus.SelectedIndex > 0)
                     {
@@ -262,7 +266,6 @@ namespace Totalworkcontrol
                     }
 
                     cmd.CommandText = sqlBuilder.ToString();
-
                     cmd.Connection = conn;
 
                     DataTable dt = new DataTable();
@@ -278,69 +281,31 @@ namespace Totalworkcontrol
             }
         }
 
-        private void dgvRequestList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        // 텍스트박스 힌트 기능
+        private void RemoveHintText(object sender, EventArgs e)
         {
-            // '상태' 컬럼일 경우에만 실행
-            if (dgvRequestList.Columns[e.ColumnIndex].Name == "StatusName" && e.Value != null)
+            TextBox txt = sender as TextBox;
+            if (txt.ForeColor == Color.Gray)
             {
-                string status = e.Value.ToString();
+                txt.Text = "";
+                txt.ForeColor = Color.Black;
+            }
+        }
 
-                // 상태 값에 따라 글자색을 바꿉니다.
-                switch (status)
+        private void SetHintText(object sender, EventArgs e)
+        {
+            TextBox txt = sender as TextBox;
+            if (string.IsNullOrWhiteSpace(txt.Text))
+            {
+                if (txt.Name == "txtCustomerName")
                 {
-                    case "진행":
-                        e.CellStyle.ForeColor = Color.Green;
-                        break;
-                    case "취소":
-                        e.CellStyle.ForeColor = Color.Red;
-                        break;
-                    case "완료":
-                        e.CellStyle.ForeColor = Color.Blue;
-                        break;
-                    default:
-                        e.CellStyle.ForeColor = Color.Black;
-                        break;
+                    txt.Text = "거래처명";
                 }
-            }
-        }
-
-        private void dgvRequestList_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            // 클릭된 컬럼이 'Progress'(현황 버튼)이고, 헤더가 아닌 경우에만 실행
-            if (dgvRequestList.Columns[e.ColumnIndex].Name == "Progress" && e.RowIndex >= 0)
-            {
-                // 선택된 행의 'RequestNo' 값을 가져옵니다.
-                int requestNo = Convert.ToInt32(dgvRequestList.Rows[e.RowIndex].Cells["RequestNo"].Value);
-
-                // 메인 폼의 화면 전환 함수를 호출하여 상세 화면을 띄웁니다.
-                MainForm main = this.ParentForm as MainForm;
-                if (main != null)
+                else if (txt.Name == "txtTitle")
                 {
-                    main.ShowControl(new ucDevRequestDetail(requestNo));
+                    txt.Text = "요청제목";
                 }
-            }
-        }
-
-        private void btnNewRequest_Click(object sender, EventArgs e)
-        {
-            MainForm main = this.ParentForm as MainForm;
-            if (main != null)
-            {
-                // RequestNo 없이 Detail 화면을 호출하여 '신규' 모드로 진입합니다.
-                main.ShowControl(new ucDevRequestDetail());
-            }
-
-        }
-
-        private void dgvRequestList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-            int requestNo = Convert.ToInt32(dgvRequestList.Rows[e.RowIndex].Cells["RequestNo"].Value);
-            // 메인 폼의 화면 전환 함수를 호출하여 상세 화면을 띄웁니다.
-            MainForm main = this.ParentForm as MainForm;
-            if (main != null)
-            {
-                main.ShowControl(new ucDevRequestDetail(requestNo));
+                txt.ForeColor = Color.Gray;
             }
         }
     }
