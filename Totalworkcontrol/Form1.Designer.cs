@@ -31,8 +31,8 @@
             this.lblTitle = new System.Windows.Forms.Label();
             this.chkSaveID = new System.Windows.Forms.CheckBox();
             this.chkAutoLogin = new System.Windows.Forms.CheckBox();
-            this.btnLogin = new System.Windows.Forms.Button();
             this.picLogo = new System.Windows.Forms.PictureBox();
+            this.btnLogin = new Guna.UI2.WinForms.Guna2Button();
             this.txtPassword = new Totalworkcontrol.MaterialTextBox();
             this.txtUserID = new Totalworkcontrol.MaterialTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
@@ -47,7 +47,6 @@
             this.lblTitle.Size = new System.Drawing.Size(180, 42);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "통합업무관리";
-           // this.lblTitle.Click += new System.EventHandler(this.label1_Click);
             // 
             // chkSaveID
             // 
@@ -69,16 +68,6 @@
             this.chkAutoLogin.Text = "10일간 자동 로그인";
             this.chkAutoLogin.UseVisualStyleBackColor = true;
             // 
-            // btnLogin
-            // 
-            this.btnLogin.Location = new System.Drawing.Point(451, 422);
-            this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(75, 23);
-            this.btnLogin.TabIndex = 5;
-            this.btnLogin.Text = "로그인";
-            this.btnLogin.UseVisualStyleBackColor = true;
-            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
-            // 
             // picLogo
             // 
             this.picLogo.Image = global::Totalworkcontrol.Properties.Resources.okpos_logo;
@@ -88,6 +77,22 @@
             this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picLogo.TabIndex = 0;
             this.picLogo.TabStop = false;
+            // 
+            // btnLogin
+            // 
+            this.btnLogin.BorderRadius = 10;
+            this.btnLogin.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnLogin.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnLogin.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnLogin.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnLogin.Font = new System.Drawing.Font("굴림", 10F);
+            this.btnLogin.ForeColor = System.Drawing.Color.White;
+            this.btnLogin.Location = new System.Drawing.Point(362, 411);
+            this.btnLogin.Name = "btnLogin";
+            this.btnLogin.Size = new System.Drawing.Size(250, 40);
+            this.btnLogin.TabIndex = 8;
+            this.btnLogin.Text = "로그인";
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // txtPassword
             // 
@@ -116,9 +121,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1028, 527);
+            this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.txtUserID);
-            this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.chkAutoLogin);
             this.Controls.Add(this.chkSaveID);
             this.Controls.Add(this.lblTitle);
@@ -141,9 +146,9 @@
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.CheckBox chkSaveID;
         private System.Windows.Forms.CheckBox chkAutoLogin;
-        private System.Windows.Forms.Button btnLogin;
         private MaterialTextBox txtUserID;
         private MaterialTextBox txtPassword;
+        private Guna.UI2.WinForms.Guna2Button btnLogin;
     }
 }
 

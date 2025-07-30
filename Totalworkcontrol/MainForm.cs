@@ -38,12 +38,7 @@ namespace Totalworkcontrol
         /// <summary>
         /// 오른쪽 메인 패널(pnlMain)에 원하는 부품(UserControl)을 보여주는 함수입니다.
         /// </summary>
-        /// <param name="control">보여줄 UserControl 부품</param>
-        private void pnlMain_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
+        /// <param name="control">보여줄 UserControl 부품<
         private void btnLogout_Click(object sender, EventArgs e)
         {
             // 1. 자동 로그인 정보만 삭제합니다.
@@ -66,6 +61,10 @@ namespace Totalworkcontrol
             control.Dock = DockStyle.Fill;
             this.pnlMain.Controls.Add(control);
         }
+
+        /*ShowControl 함수는 화면을 바꿀 때 쓰는 기술입니다.
+
+        만약 '대시보드'가 보이는 상태에서 '개발 요청' 메뉴를 누르면, 이 Clear() 명령이 먼저 기존에 있던 '대시보드' 부품을 깨끗하게 치워줍니다.*/
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {

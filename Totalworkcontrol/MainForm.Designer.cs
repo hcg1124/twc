@@ -175,7 +175,6 @@
             this.pnlMain.Name = "pnlMain";
             this.pnlMain.Size = new System.Drawing.Size(846, 467);
             this.pnlMain.TabIndex = 2;
-            this.pnlMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlMain_Paint);
             // 
             // MainForm
             // 
